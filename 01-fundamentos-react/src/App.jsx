@@ -1,4 +1,4 @@
-import { Post } from './Post';
+import { Post } from './components/Post';
 import { Header } from './components/Header'
 import { Sidebar } from './components/Sidebar'
 
@@ -13,11 +13,7 @@ export function App() {
       <div className={styles.wrapper}>
         <Sidebar />
         <main>
-          <Post author = "Marco Savi Casagrande"
-                content = "This is a great day to learn React" />
-
-          <Post author = "Marco Savi Casagrande"
-                content = "This is a great day to learn how to better code" />
+          <Post/><Post/>
         </main>
       </div>
     </div> 
