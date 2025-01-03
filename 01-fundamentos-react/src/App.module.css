@@ -12,5 +12,7 @@
 @media (max-width: 768px) {
     .wrapper {
         grid-template-columns: 1fr;
+    } html {
+        font-size: 87.5%;
     }
 }
