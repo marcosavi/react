@@ -1,23 +1,40 @@
-import styles from "./Post.module.css"
+import { format, formatDistanceToNow } from 'date-fns'
+import ptBR from 'date-fns/locale/pt-BR'
+
 import {Comment} from "./Comment.jsx"
 import { Avatar } from "./Avatar.jsx";
 
-export function Post() {
+import styles from "./Post.module.css"
+
+export function Post({author, publishedAt}) {
+    const publishedDateFormatted = format(publishedAt, "do 'de' LLLL 'às' HH", {
+        locale: ptBR,
+    })
+
+    const publishedDateRelativeToNow = formatDistanceToNow(publishedAt, {
+        locale: ptBR,
+    })
+
     return(
         <article className  = {styles.post}>
             <header>
                 <div className={styles.author}>
-                    <Avatar hasBorder src="https://github.com/diego3g.png" />
+                    <Avatar src={author.avatarUrl} />
                     <div className = {styles.authorInfo}>
-                        <strong>Marco Casagrande</strong>
-                        <span>Web Developer</span>
+                        <strong>{author.name}</strong>
+                        <span>{author.role}</span>
                     </div>
                 </div>
-                <time title="03 de Janeiro de 2025" dateTime="2025-02-01">Publicado a 1 hora</time>
+                <time title={publishedDateFormatted} dateTime="2025-02-01">
+                    {publishedDateRelativeToNow}
+                </time>
             </header>
 
             <div className={styles.content}>
-                <p>Fala pessoal 👋</p>
+            <p>Fala pessoal 👋</p>
+                <p>Finalmente finalizei meu novo site/portfólio. Foi um baita desafio criar todo o design e codar na unha, mas consegui 💪🏻</p>
+                <p>👉{' '}<a href="#">devonlane.design</a></p>
+                <p><a href="#">#uiux #userexperience</a></p><p>Fala pessoal 👋</p>
                 <p>Finalmente finalizei meu novo site/portfólio. Foi um baita desafio criar todo o design e codar na unha, mas consegui 💪🏻</p>
                 <p>👉{' '}<a href="#">devonlane.design</a></p>
                 <p><a href="#">#uiux #userexperience</a></p>
