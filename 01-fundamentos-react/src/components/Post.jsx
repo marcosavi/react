@@ -1,19 +1,38 @@
-import { format, formatDistanceToNow } from 'date-fns'
-import ptBR from 'date-fns/locale/pt-BR'
-
 import {Comment} from "./Comment.jsx"
 import { Avatar } from "./Avatar.jsx";
-
 import styles from "./Post.module.css"
+import { useState } from "react";
 
-export function Post({author, publishedAt}) {
-    const publishedDateFormatted = format(publishedAt, "do 'de' LLLL 'às' HH", {
-        locale: ptBR,
-    })
+// React state = variáveis que eu quero que o componente monitore
+export function Post({author, publishedAt, content}) {
 
-    const publishedDateRelativeToNow = formatDistanceToNow(publishedAt, {
-        locale: ptBR,
-    })
+    const [comments, setComments] = useState([])
+    const [newCommentText, setNewCommentText] = useState('')
+
+    function handleCreateNewComment() { 
+        event.preventDefault();
+        setComments([...comments, newCommentText]); //spread operator: lê os valores que tem na array commentários
+        setNewCommentText('')
+    };
+
+    function handleNewCommentChange() {
+        event.target.setCustomValidity('');
+        setNewCommentText(event.target.value)
+    };
+
+    function handleNewCommentInvalid() {
+        event.target.setCustomValidity('Esse campo é obrigatório :)')
+    }
+
+    function deleteComment(commentToDelete) {
+        const commentsWithoutDeletedOne = comments.filter(comment => {
+            return comment != commentToDelete;
+        })
+
+        setComments(commentsWithoutDeletedOne);
+    }
+
+    const isNewCommentInputEmpty = newCommentText.length == 0
 
     return(
         <article className  = {styles.post}>
@@ -25,33 +44,45 @@ export function Post({author, publishedAt}) {
                         <span>{author.role}</span>
                     </div>
                 </div>
-                <time title={publishedDateFormatted} dateTime="2025-02-01">
-                    {publishedDateRelativeToNow}
-                </time>
+                <time title="Certain time">Publicado há 1h atrás</time>
             </header>
 
             <div className={styles.content}>
-            <p>Fala pessoal 👋</p>
-                <p>Finalmente finalizei meu novo site/portfólio. Foi um baita desafio criar todo o design e codar na unha, mas consegui 💪🏻</p>
-                <p>👉{' '}<a href="#">devonlane.design</a></p>
-                <p><a href="#">#uiux #userexperience</a></p><p>Fala pessoal 👋</p>
-                <p>Finalmente finalizei meu novo site/portfólio. Foi um baita desafio criar todo o design e codar na unha, mas consegui 💪🏻</p>
-                <p>👉{' '}<a href="#">devonlane.design</a></p>
-                <p><a href="#">#uiux #userexperience</a></p>
+                {content.map(line => {
+                    if (line.type == "paragraph") {
+                        return <p key={line.content}>{line.content}</p>
+                    } else if (line.type == "link") {
+                        return <p key={line.content}><a href="#">{line.content}</a></p>
+                    }
+                })}
             </div>
 
-            <form className = {styles.commentForm}>
+            <form onSubmit={handleCreateNewComment} className = {styles.commentForm}>
                 <strong>Deixe seu comentário</strong>
-                <textarea placeholder="Deixe seu comentário"></textarea>
+                <textarea
+                    name="comment"
+                    placeholder="Deixe seu comentário"
+                    value={newCommentText}
+                    onChange = {handleNewCommentChange}
+                    onInvalid = {handleNewCommentInvalid}
+                    required
+                    ></textarea>
                 <footer>
-                    <button type="submit">Comentar</button>
+                    <button type="submit" disabled={isNewCommentInputEmpty}>
+                        Publicar
+                    </button>
                 </footer>
             </form>
 
             <div className={styles.commentList}>
-                <Comment />
-                <Comment />
-                <Comment />
+               {comments.map(comment => {
+                return(
+                    <Comment
+                        key={comment}
+                        content={comment}
+                        deletComment={deleteComment} />
+                )
+               })}
             </div>
 
         </article>

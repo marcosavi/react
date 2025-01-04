@@ -14,11 +14,11 @@ const posts = [
       role: 'CMU @ student'
     },
     content: [
-      {type:'paragraph', content:'Fala pessoal 👋'},
-      {type: 'paragraph', content:'Finalmente finalizei meu novo site/portfólio. Foi um baita desafio criar todo o design e codar na unha, mas consegui 💪🏻'},
+      {type:'paragraph', content:'Fala pessoal'},
+      {type: 'paragraph', content:'Finalmente finalizei meu novo portfólio. Foi um baita desafio criar todo o design e codar na unha, mas consegui 💪🏻'},
       {type : 'link', content: "devonlane.design"},
     ],
-    publishedAt: new Date('2025-05-10 21:15:00'),
+    publishedAt: new Date('2025-05-10'),
   },
   
   
@@ -31,15 +31,14 @@ const posts = [
     },
     content: [
       {type:'paragraph', content:'Fala pessoal 👋'},
-      {type: 'paragraph', content:'Finalmente finalizei meu novo site/portfólio. Foi um baita desafio criar todo o design e codar na unha, mas consegui 💪🏻'},
+      {type: 'paragraph', content:'Finalmente finalizei meu novo site. Foi um baita desafio criar todo o design e codar na unha, mas consegui 💪🏻'},
       {type : 'link', content: "devonlane.design"},
     ],
-    publishedAt: new Date('2025-05-10 21:15:00'),
+    publishedAt: new Date('2025-05-10'),
   }, 
 ];
 
 // iteration: repeat something
-
 // use "map" as a good alternative for retrievig something from it
 
 export function App() {
@@ -49,15 +48,18 @@ export function App() {
 
       <div className={styles.wrapper}>
         <Sidebar />
+
         <main>
-          {posts.map(post => {
-            return (<Post
+          {posts.map(post => { //há uma lista aqui 
+            return (<Post //cada componente deve have uma "key"
+              key = {post.id}
               author = {post.author}
               content = {post.content}
               date = {post.publishedAt}
             />); 
           })}
         </main>
+
       </div>
     </div> 
   )
