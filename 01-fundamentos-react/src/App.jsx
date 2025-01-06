@@ -45,13 +45,11 @@ export function App() {
   return (
     <div>
       <Header />
-
       <div className={styles.wrapper}>
         <Sidebar />
-
         <main>
-          {posts.map(post => { //há uma lista aqui 
-            return (<Post //cada componente deve have uma "key"
+          {posts.map(post => { 
+            return (<Post
               key = {post.id}
               author = {post.author}
               content = {post.content}
@@ -59,7 +57,6 @@ export function App() {
             />); 
           })}
         </main>
-
       </div>
     </div> 
   )
